@@ -1,24 +1,12 @@
 import streamlit as st
-import streamlit.components.v1 as components
 from st_bridge import bridge, html
 
-data = bridge("my-bridge", default={"current_time": ""})
+data = bridge("my-bridge", default="no button is clicked")
 
-st.subheader("Current Time: %s" % data['current_time'])
-
-components.html("""
-<script>
-    function setTime() {
-        var today = new Date();
-        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-        window.parent.stBridges.send("my-bridge", { current_time: time });
-    }
-    function endlessLoop() {
-        setTimeout(() => {
-            setTime();
-            endlessLoop();
-        }, 333);
-    }
-    endlessLoop();
-</script>
+html("""
+<button onClick="stBridges.send('my-bridge', 'button 1 is clicked')">Button 1</button>
+<button onClick="stBridges.send('my-bridge', 'button 2 is clicked')">Button 2</button>
+<button onClick="stBridges.send('my-bridge', 'button 3 is clicked')">Button 3</button>
 """)
+
+st.write(data)
